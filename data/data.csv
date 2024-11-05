@@ -1,0 +1,12 @@
+
+titulo,descripcion,categoria,nivel,duracion
+"Curso de Python","Programación en Python, fundamentos de programación, sintaxis básica, control de flujo","Programación","Principiante",20
+"Introducción a la Inteligencia Artificial","Conceptos básicos de IA, machine learning, redes neuronales","Inteligencia Artificial","Principiante",30
+"Desarrollo Web con JavaScript","HTML, CSS, JavaScript, frameworks como React","Desarrollo Web","Intermedio",40
+"Machine Learning Avanzado","Algoritmos de machine learning, clustering, regresión","Inteligencia Artificial","Avanzado",50
+"Fundamentos de Álgebra Lineal","Matrices, vectores, transformaciones lineales","Matemáticas","Principiante",15
+"Análisis de Datos con Python","Pandas, visualización de datos, limpieza de datos","Data Science","Intermedio",35
+"Diseño Gráfico con Photoshop","Herramientas de Photoshop, diseño visual, colorimetría","Diseño","Principiante",25
+"Data Science con R","Modelos estadísticos, manipulación de datos, gráficos","Data Science","Avanzado",45
+"Estadística para Ciencia de Datos","Análisis estadístico, probabilidad, distribuciones","Data Science","Intermedio",30
+"Introducción a Redes Neuronales","Arquitectura de redes neuronales, backpropagation","Inteligencia Artificial","Intermedio",40
