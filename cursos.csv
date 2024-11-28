@@ -1,0 +1,6 @@
+id,nombre,descripcion,categoria,nivel
+1,Introducción a Python,Aprende los fundamentos de Python, desde variables hasta funciones. Ideal para principiantes.,Programación,Principiante
+2,Machine Learning Básico,Conoce los conceptos básicos de aprendizaje automático y cómo usar bibliotecas como Scikit-learn.,Inteligencia Artificial,Intermedio
+3,Diseño Gráfico con Canva,Descubre cómo crear diseños profesionales con herramientas básicas de Canva.,Diseño,Principiante
+4,Java Avanzado,Explora características avanzadas de Java, como multithreading streams y patrones de diseño.,Programación,Avanzado
+5,Fundamentos de Marketing Digital,Aprende sobre SEO, SEM y redes sociales para posicionar productos y servicios.,Marketing,Principiante
