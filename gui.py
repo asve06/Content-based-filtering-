@@ -1,89 +1,143 @@
 import tkinter as tk
 from tkinter import messagebox
-from recommender import generar_recomendaciones_usuario
-from user_profile import actualizar_perfil_usuario
-from info import cargar_datos_usuario, guardar_interacciones_usuario
+import csv
 
-# # Ejemplo de la matriz de características de cursos (esto sería más complejo en una aplicación real)
-# matriz_caracteristicas = [
-#     [0.1, 0.3, 0.5],
-#     [0.3, 0.6, 0.2],
-#     [0.4, 0.5, 0.1],
-#     [0.6, 0.2, 0.8],
-#     [0.7, 0.5, 0.3]
-# ]
+# Leer datos del archivo CSV
+def cargar_cursos(archivo_csv):
+    cursos = []
+    with open(archivo_csv, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            cursos.append({
+                "id": int(row["id"]),
+                "nombre": row["nombre"],
+                "descripcion": row["descripcion"],
+                "categoria": row["categoria"],
+                "nivel": row["nivel"]
+            })
+    return cursos
 
-# # Ejemplo de un dataset de cursos (esto puede provenir de un CSV o base de datos)
-# dataset = [
-#     {'nombre': 'Curso 1', 'descripcion': 'Curso básico de Python'},
-#     {'nombre': 'Curso 2', 'descripcion': 'Curso intermedio de Java'},
-#     {'nombre': 'Curso 3', 'descripcion': 'Curso avanzado de C++'},
-#     {'nombre': 'Curso 4', 'descripcion': 'Curso de Inteligencia Artificial'},
-#     {'nombre': 'Curso 5', 'descripcion': 'Curso de Machine Learning'}
-# ]
+# Simular clientes y recomendaciones
+clientes = [
+    {"id": 1, "nombre": "Juan Pérez"},
+    {"id": 2, "nombre": "María López"},
+    {"id": 3, "nombre": "Carlos García"}
+]
+
+# Simulación de recomendaciones por cliente
+recomendaciones_por_cliente = {
+    1: [1, 2, 3, 4],
+    2: [5, 6, 7, 8],
+    3: [9, 10, 11, 12]
+}
 
 class RecomendacionesApp:
-    def __init__(self, master):
+    def __init__(self, master, cursos):
         self.master = master
         self.master.title("Sistema de Recomendaciones de Cursos")
         
-        self.usuario_id = 1  # Suponemos que el ID del usuario es 1
+        # Cargar datos
+        self.cursos = cursos
+        self.cliente_seleccionado = tk.StringVar(value="Selecciona un cliente")
         self.recomendaciones = []
-        
+        self.interesados = []
+        self.no_interesados = []
+
         # Frame principal
         self.frame = tk.Frame(self.master)
         self.frame.pack(padx=10, pady=10)
-        
-        # Listbox para mostrar recomendaciones
-        self.listbox = tk.Listbox(self.frame, width=50, height=10)
-        self.listbox.pack(pady=5)
-        
-        # Botón para actualizar recomendaciones
-        self.update_button = tk.Button(self.frame, text="Actualizar Recomendaciones", command=self.actualizar_recomendaciones)
-        self.update_button.pack(pady=5)
-        
-        # Botón para marcar como favorito
-        self.favorite_button = tk.Button(self.frame, text="Marcar como Favorito", command=self.marcar_como_favorito)
-        self.favorite_button.pack(pady=5)
-        
-        # Mostrar recomendaciones iniciales
-        self.actualizar_recomendaciones()
+
+        # Menú desplegable para seleccionar cliente
+        self.cliente_menu = tk.OptionMenu(
+            self.frame, self.cliente_seleccionado, *[cliente["nombre"] for cliente in clientes], 
+            command=self.cambiar_cliente
+        )
+        self.cliente_menu.pack(pady=5)
+
+        # Frame para mostrar las tarjetas de recomendaciones
+        self.cursos_frame = tk.Frame(self.frame)
+        self.cursos_frame.pack(pady=10)
+
+    def cambiar_cliente(self, cliente_nombre):
+        # Buscar cliente seleccionado
+        cliente = next((c for c in clientes if c["nombre"] == cliente_nombre), None)
+        if cliente:
+            self.cliente_id = cliente["id"]
+            self.interesados = []  # Reiniciar intereses
+            self.no_interesados = []  # Reiniciar descartes
+            self.actualizar_recomendaciones()
 
     def actualizar_recomendaciones(self):
-        # Cargar datos del usuario
-        cursos_vistos, favoritos = cargar_datos_usuario(self.usuario_id)
-        
-        # Generar nuevas recomendaciones
-        self.recomendaciones = generar_recomendaciones_usuario(self.usuario_id, matriz_caracteristicas, dataset)
-        
-        # Limpiar la listbox
-        self.listbox.delete(0, tk.END)
-        
-        # Agregar las recomendaciones a la listbox
-        for recomendacion in self.recomendaciones:
-            self.listbox.insert(tk.END, f"{recomendacion[0]} (Similitud: {recomendacion[1]:.2f})")
-    
-    def marcar_como_favorito(self):
-        # Obtener el índice seleccionado de la listbox
-        seleccion = self.listbox.curselection()
-        
-        if not seleccion:
-            messagebox.showwarning("Advertencia", "Por favor, selecciona un curso.")
-            return
-        
-        curso_seleccionado = self.recomendaciones[seleccion[0]][0]  # Nombre del curso
-        # Buscar el índice del curso en el dataset
-        curso_id = next(i for i, curso in enumerate(dataset) if curso['nombre'] == curso_seleccionado)
-        
-        # Marcar el curso como favorito y actualizar recomendaciones
-        actualizar_perfil_usuario(self.usuario_id, curso_id, es_favorito=True, matriz_caracteristicas=matriz_caracteristicas)
-        
-        messagebox.showinfo("Éxito", f"El curso '{curso_seleccionado}' ha sido marcado como favorito.")
-        
-        # Actualizar la lista de recomendaciones
-        self.actualizar_recomendaciones()
+        # Obtener recomendaciones del cliente
+        if hasattr(self, 'cliente_id'):
+            self.recomendaciones = recomendaciones_por_cliente.get(self.cliente_id, [])
+        else:
+            self.recomendaciones = []
+
+        # Limpiar las tarjetas existentes
+        for widget in self.cursos_frame.winfo_children():
+            widget.destroy()
+
+        # Crear una tarjeta para cada recomendación
+        for curso_id in self.recomendaciones:
+            curso = next((c for c in self.cursos if c["id"] == curso_id), None)
+            if curso:
+                self.crear_tarjeta_curso(curso)
+
+    def crear_tarjeta_curso(self, curso):
+        # Crear tarjeta
+        tarjeta = tk.Frame(self.cursos_frame, borderwidth=2, relief="groove", padx=10, pady=10)
+        tarjeta.pack(side="top", fill="x", pady=5)
+
+        # Mostrar información básica
+        tk.Label(tarjeta, text=f"{curso['nombre']}", font=("Arial", 12, "bold")).pack(anchor="w")
+        tk.Label(tarjeta, text=f"Categoría: {curso['categoria']} | Nivel: {curso['nivel']}", font=("Arial", 10)).pack(anchor="w")
+
+        # Tooltip para descripción
+        def mostrar_descripcion(event):
+            tooltip = tk.Toplevel(self.master)
+            tooltip.wm_overrideredirect(True)  # Quitar barra de título
+            x, y = event.x_root + 10, event.y_root + 10
+            tooltip.wm_geometry(f"+{x}+{y}")
+            tk.Label(tooltip, text=curso["descripcion"], background="lightyellow", relief="solid", borderwidth=1).pack()
+            event.widget.tooltip = tooltip
+
+        def ocultar_descripcion(event):
+            if hasattr(event.widget, "tooltip"):
+                event.widget.tooltip.destroy()
+                del event.widget.tooltip
+
+        tarjeta.bind("<Enter>", mostrar_descripcion)
+        tarjeta.bind("<Leave>", ocultar_descripcion)
+
+        # Botones de acción
+        acciones_frame = tk.Frame(tarjeta)
+        acciones_frame.pack(anchor="e", pady=5)
+
+        tk.Button(
+            acciones_frame, text="Me interesa",
+            command=lambda: self.marcar_interes(curso["id"])
+        ).pack(side="left", padx=5)
+
+        tk.Button(
+            acciones_frame, text="No me interesa",
+            command=lambda: self.marcar_no_interes(curso["id"])
+        ).pack(side="left", padx=5)
+
+    def marcar_interes(self, curso_id):
+        if curso_id not in self.interesados:
+            self.interesados.append(curso_id)
+            messagebox.showinfo("Interés", f"El curso con ID {curso_id} ha sido marcado como 'Me interesa'.")
+
+    def marcar_no_interes(self, curso_id):
+        if curso_id not in self.no_interesados:
+            self.no_interesados.append(curso_id)
+            messagebox.showinfo("Descartado", f"El curso con ID {curso_id} ha sido marcado como 'No me interesa'.")
+
+# Cargar cursos desde el CSV
+cursos = cargar_cursos("data/data.csv")
 
 # Crear la ventana principal
 root = tk.Tk()
-app = RecomendacionesApp(root)
+app = RecomendacionesApp(root, cursos)
 root.mainloop()
