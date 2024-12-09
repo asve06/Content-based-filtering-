@@ -1,37 +1,36 @@
 import numpy as np
 import scipy.sparse
 
-# Cargar la matriz TF-IDF generada previamente
-ruta_guardado = "matriz_caracteristicas.npz"
-matriz_caracteristicas = scipy.sparse.load_npz(ruta_guardado)
+def cargar_matriz(ruta):
+    """
+    Carga la matriz TF-IDF desde un archivo.
+    """
+    try:
+        matriz = scipy.sparse.load_npz(ruta)
+        print(f"✔️ Matriz cargada desde: {ruta}")
+        return matriz
+    except FileNotFoundError:
+        print(f"❌ Error: No se encontró el archivo: {ruta}")
+        return None
 
-# Función para crear el perfil del usuario
 def crear_perfil_usuario(interacciones, matriz):
     """
-    Crea un perfil de usuario basado en los cursos con los que ha interactuado.
-    :param interacciones: Lista de índices de los cursos que el usuario ha marcado como favoritos
-    :param matriz: Matriz TF-IDF de los cursos
-    :return: Vector de perfil del usuario
+    Crea un perfil del usuario basado en interacciones.
     """
-    # Verificar que los índices estén dentro de los límites de la matriz
-    num_cursos = matriz.shape[0]  # Número de cursos en la matriz
+    num_cursos = matriz.shape[0]
     interacciones_validas = [i for i in interacciones if i < num_cursos]
-
-    if not interacciones_validas:  # Si no hay interacciones válidas
-        print("No hay interacciones válidas.")
-        return np.zeros(matriz.shape[1])  # Devuelve un vector vacío
-    
-    # Calcula el promedio de las características de los cursos seleccionados
+    if not interacciones_validas:
+        print("⚠️ No hay interacciones válidas para generar un perfil.")
+        return np.zeros(matriz.shape[1])
     perfil_usuario = matriz[interacciones_validas].mean(axis=0)
+    print("✔️ Perfil del usuario generado exitosamente.")
     return perfil_usuario
 
-# Simulación de interacciones del usuario
-# Supongamos que el usuario ha interactuado con los cursos en los índices 0, 2 y 5
-interacciones_usuario = [1, 2, 5]
-
-# Crear el perfil del usuario
-perfil_usuario = crear_perfil_usuario(interacciones_usuario, matriz_caracteristicas)
-
-# Imprimir el perfil del usuario (vector de características)
-print("Fase 2 completada: Perfil del usuario creado.")
-print("Perfil del usuario:", perfil_usuario)
+# Ejecución
+if __name__ == "__main__":
+    ruta_matriz = "matriz_caracteristicas.npz"
+    matriz = cargar_matriz(ruta_matriz)
+    if matriz is not None:
+        interacciones_usuario = [1, 2, 5]
+        perfil_usuario = crear_perfil_usuario(interacciones_usuario, matriz)
+        print("Perfil del usuario:", perfil_usuario)
