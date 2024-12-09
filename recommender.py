@@ -6,13 +6,12 @@ from feedback import recopilar_feedback
 from evaluation import evaluar_recomendaciones
 
 RUTA_DATASET = "data/data.csv"
-dataset = cargar_datos(RUTA_DATASET)
+RUTA_INTERRACIONES = "data/interacciones_usuarios.csv"
 
+dataset = cargar_datos(RUTA_DATASET)
+interacciones_usuario = cargar_datos(RUTA_INTERRACIONES)
 # Cargar la matriz de características (TF-IDF) y el vectorizador
 matriz_caracteristicas, _ = generar_matriz_caracteristicas(dataset)
-
-# Simulación de interacciones del usuario
-interacciones_usuario = [1, 2, 5]  # Índices de los cursos favoritos del usuario
 
 perfil_usuario = crear_perfil_usuario(interacciones_usuario, matriz_caracteristicas)
 

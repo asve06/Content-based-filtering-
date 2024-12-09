@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
-
+import pandas as pd
+    
 def cargar_datos(ruta):
     """
     Carga el dataset desde un archivo CSV.
@@ -30,7 +31,7 @@ def generar_matriz_caracteristicas(df):
     """
     try:
         df = limpiar_datos(df)
-        vectorizador = TfidfVectorizer(stop_words="english")
+        vectorizador = TfidfVectorizer(stop_words="spanish")
         matriz = vectorizador.fit_transform(df["descripcion"])
         print("✔️ Matriz TF-IDF generada exitosamente.")
         return matriz, vectorizador
