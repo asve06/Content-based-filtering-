@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
 import csv
-from info import cargar_datos, generar_matriz_caracteristicas
 from recommender import recomendar_cursos
 from ast import literal_eval
 
@@ -80,12 +79,13 @@ class RecomendacionesApp:
             self.cursos_vistos = cliente["cursos_vistos"]  # Reiniciar cursos vistos
             self.interesados = cliente["interesados"]  # Reiniciar intereses
             self.no_interesados = cliente["no_interesados"]  # Reiniciar descartes
-            self.actualizar_recomendaciones()
+            self.actualizar_recomendaciones(cliente)
 
-    def actualizar_recomendaciones(self):
+    def actualizar_recomendaciones(self, cliente):
         # Obtener recomendaciones del cliente
         if hasattr(self, 'cliente_id'):
-            lista_recomendaciones, similitudes = recomendar_cursos(self.cursos_vistos)
+            print(f"Recomendaciones numero 1")
+            lista_recomendaciones, similitudes = recomendar_cursos(cliente)
             self.recomendaciones = lista_recomendaciones
         else:
             self.recomendaciones = []
@@ -98,9 +98,9 @@ class RecomendacionesApp:
         for curso_id in self.recomendaciones:
             curso = next((c for c in self.cursos if c["id"] == curso_id), None)
             if curso:
-                self.crear_tarjeta_curso(curso)
+                self.crear_tarjeta_curso(curso, cliente)
 
-    def crear_tarjeta_curso(self, curso):
+    def crear_tarjeta_curso(self, curso, cliente):
         # Crear tarjeta
         tarjeta = tk.Frame(self.cursos_frame, borderwidth=2, relief="groove", padx=10, pady=10)
         tarjeta.pack(side="top", fill="x", pady=5)
@@ -132,22 +132,27 @@ class RecomendacionesApp:
 
         tk.Button(
             acciones_frame, text="Me interesa",
-            command=lambda: self.marcar_interes(curso["id"])
+            command=lambda: self.marcar_interes(curso["id"], cliente)
         ).pack(side="left", padx=5)
 
         tk.Button(
             acciones_frame, text="No me interesa",
-            command=lambda: self.marcar_no_interes(curso["id"])
+            command=lambda: self.marcar_no_interes(curso["id"], cliente)
         ).pack(side="left", padx=5)
 
-    def marcar_interes(self, curso_id):
-        if curso_id not in self.interesados:
-            self.interesados.append(curso_id)
+    def marcar_interes(self, curso_id, cliente):
+        if curso_id not in cliente["interesados"]:
+            cliente["interesados"].append(curso_id)
+            if curso_id in cliente["no_interesados"]:
+                cliente["no_interesados"].remove(curso_id)
+            print(cliente["interesados"])
             messagebox.showinfo("Interés", f"El curso con ID {curso_id} ha sido marcado como 'Me interesa'.")
 
-    def marcar_no_interes(self, curso_id):
-        if curso_id not in self.no_interesados:
-            self.no_interesados.append(curso_id)
+    def marcar_no_interes(self, curso_id, cliente):
+        if curso_id not in cliente["no_interesados"]:
+            cliente["no_interesados"].append(curso_id)
+            if curso_id in cliente["interesados"]:
+                cliente["interesados"].remove(curso_id)
             messagebox.showinfo("Descartado", f"El curso con ID {curso_id} ha sido marcado como 'No me interesa'.")
 
 RUTA_DATASET = "data/data.csv"

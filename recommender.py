@@ -12,15 +12,15 @@ dataset = cargar_datos(RUTA_DATASET)
 matriz_caracteristicas, _ = generar_matriz_caracteristicas(dataset)
 
 
-def recomendar_cursos(interacciones_usuario, top_n=5):
+def recomendar_cursos(usuario, top_n=5):
     """ 
     Genera recomendaciones basadas en similitud de coseno.
-    :param interacciones_usuario: Lista de índices de cursos con los que el usuario ha interactuado
+    :param usuario: El usuario para el que se generarán las recomendaciones
     :param top_n: Número de recomendaciones a devolver
     :return: Lista de índices de cursos recomendados y sus similitudes
     """
     # Crear perfil del usuario
-    perfil_usuario = crear_perfil_usuario(interacciones_usuario, matriz_caracteristicas)
+    perfil_usuario = crear_perfil_usuario(usuario, matriz_caracteristicas)
     
     # Verificar que el perfil del usuario tenga 2 dimensiones
     if perfil_usuario.ndim == 1:  # Si es un vector 1D, conviértelo a 2D
@@ -46,7 +46,7 @@ def recomendar_cursos(interacciones_usuario, top_n=5):
             
    
     # Evaluar las recomendaciones (suponiendo que reales es lo que el usuario realmente preferiría)
-    reales = interacciones_usuario  # Cursos que realmente le gustan al usuario
+    reales = usuario.get("cursos_vistos", []) # Cursos que realmente le gustan al usuario
     evaluar_recomendaciones(reales, indices_recomendados)
             
     return indices_recomendados, similitudes_recomendadas
