@@ -1,12 +1,21 @@
-
-titulo,descripcion,categoria,nivel,duracion
-"Curso de Python","Programación en Python, fundamentos de programación, sintaxis básica, control de flujo","Programación","Principiante",20
-"Introducción a la Inteligencia Artificial","Conceptos básicos de IA, machine learning, redes neuronales","Inteligencia Artificial","Principiante",30
-"Desarrollo Web con JavaScript","HTML, CSS, JavaScript, frameworks como React","Desarrollo Web","Intermedio",40
-"Machine Learning Avanzado","Algoritmos de machine learning, clustering, regresión","Inteligencia Artificial","Avanzado",50
-"Fundamentos de Álgebra Lineal","Matrices, vectores, transformaciones lineales","Matemáticas","Principiante",15
-"Análisis de Datos con Python","Pandas, visualización de datos, limpieza de datos","Data Science","Intermedio",35
-"Diseño Gráfico con Photoshop","Herramientas de Photoshop, diseño visual, colorimetría","Diseño","Principiante",25
-"Data Science con R","Modelos estadísticos, manipulación de datos, gráficos","Data Science","Avanzado",45
-"Estadística para Ciencia de Datos","Análisis estadístico, probabilidad, distribuciones","Data Science","Intermedio",30
-"Introducción a Redes Neuronales","Arquitectura de redes neuronales, backpropagation","Inteligencia Artificial","Intermedio",40
+id,nombre,descripcion,categoria,nivel
+1,Introducción a Python,"Aprende los fundamentos de Python, desde variables hasta funciones. Ideal para principiantes.",Programación,Principiante
+2,Machine Learning Básico,"Conoce los conceptos básicos de aprendizaje automático y cómo usar bibliotecas como Scikit-learn.",Inteligencia Artificial,Intermedio
+3,Diseño Gráfico con Canva,"Descubre cómo crear diseños profesionales con herramientas básicas de Canva.",Diseño,Principiante
+4,Java Avanzado,"Explora características avanzadas de Java, como multithreading, streams y patrones de diseño.",Programación,Avanzado
+5,Fundamentos de Marketing Digital,"Aprende sobre SEO, SEM y redes sociales para posicionar productos y servicios.",Marketing,Principiante
+6,Introducción a SQL,"Conoce las bases de datos relacionales y aprende a escribir consultas SQL.",Bases de Datos,Principiante
+7,Deep Learning Avanzado,"Descubre cómo funcionan redes neuronales profundas usando TensorFlow y PyTorch.",Inteligencia Artificial,Avanzado
+8,Fotografía Digital para Redes Sociales,"Aprende técnicas básicas de composición, iluminación y edición.",Fotografía,Principiante
+9,Desarrollo Web Full Stack,"Construye aplicaciones web modernas usando HTML, CSS, JavaScript y frameworks como React.",Programación,Intermedio
+10,Edición de Video con Adobe Premiere,"Domina herramientas para edición profesional de video y efectos visuales.",Diseño,Intermedio
+11,Big Data y Análisis de Datos,"Aprende a trabajar con grandes volúmenes de datos utilizando Apache Spark y Hadoop.",Datos,Avanzado
+12,Branding y Estrategias de Marca,"Descubre cómo crear una identidad de marca fuerte y campañas publicitarias exitosas.",Marketing,Intermedio
+13,Programación en C#,"Domina los fundamentos de programación en C# para aplicaciones de escritorio y juegos.",Programación,Intermedio
+14,Redacción Publicitaria Efectiva,"Aprende a escribir textos que conecten con la audiencia y generen conversión.",Marketing,Principiante
+15,Ciberseguridad Básica,"Conoce las amenazas más comunes y cómo proteger sistemas y redes.",Ciberseguridad,Principiante
+16,Desarrollo de Aplicaciones Android,"Aprende a crear apps móviles utilizando Kotlin y Android Studio.",Programación,Avanzado
+17,Modelado 3D con Blender,"Descubre cómo crear modelos 3D realistas y animaciones.",Diseño,Intermedio
+18,Machine Learning para Finanzas,"Aplicaciones de Machine Learning en análisis financiero y predicción de mercados.",Inteligencia Artificial,Avanzado
+19,Análisis Exploratorio de Datos,"Domina herramientas de visualización y análisis para interpretar datos.",Datos,Intermedio
+20,Fundamentos de Redes,"Aprende cómo funcionan las redes informáticas, desde conceptos básicos hasta protocolos.",Ciberseguridad,Principiante

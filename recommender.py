@@ -1,16 +1,19 @@
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-from scipy.sparse import load_npz
-
-# Cargar la matriz TF-IDF previamente generada
-ruta_matriz = "matriz_caracteristicas.npz"
-matriz_caracteristicas = load_npz(ruta_matriz)
-
-# Cargar el perfil del usuario (simulando las interacciones)
+from info import cargar_datos, generar_matriz_caracteristicas
 from user_profile import crear_perfil_usuario
+from feedback import recopilar_feedback
+from evaluation import evaluar_recomendaciones
+
+RUTA_DATASET = "data/data.csv"
+dataset = cargar_datos(RUTA_DATASET)
+
+# Cargar la matriz de características (TF-IDF) y el vectorizador
+matriz_caracteristicas, _ = generar_matriz_caracteristicas(dataset)
 
 # Simulación de interacciones del usuario
 interacciones_usuario = [1, 2, 5]  # Índices de los cursos favoritos del usuario
+
 perfil_usuario = crear_perfil_usuario(interacciones_usuario, matriz_caracteristicas)
 
 if perfil_usuario is None or np.all(perfil_usuario == 0):
@@ -45,17 +48,22 @@ else:
     # Generar las recomendaciones
     indices_recomendados, similitudes_recomendadas = recomendar_cursos(perfil_usuario, matriz_caracteristicas, top_n=5)
 
-    # Mostrar resultados
-    from info import cargar_datos  # Para cargar los datos originales y obtener nombres de los cursos
-
-    ruta_dataset = "cursos.csv"  # Ruta del dataset original
-    dataset = cargar_datos(ruta_dataset)
-
     if dataset is not None:
         print("\nRecomendaciones para el usuario:")
         for i, indice in enumerate(indices_recomendados):
             if indice < len(dataset):
                 curso = dataset.iloc[indice]
                 print(f"{i + 1}. {curso['nombre']} (Similitud: {similitudes_recomendadas[i]:.2f})")
+        
+        # Recopilar feedback del usuario
+        recomendaciones = dataset.iloc[indices_recomendados]["nombre"].tolist()
+        calificaciones = [4, 5, 3, 2, 5]  # Ejemplo de calificaciones proporcionadas por el usuario
+
+        recopilar_feedback(usuario_id=1, recomendaciones=recomendaciones, calificaciones=calificaciones)
+
+        # Evaluar las recomendaciones (suponiendo que reales es lo que el usuario realmente preferiría)
+        reales = interacciones_usuario  # Cursos que realmente le gustan al usuario
+        evaluar_recomendaciones(reales, indices_recomendados)
+        
     else:
         print("No se pudieron cargar los datos originales para mostrar los nombres de los cursos.")

@@ -14,8 +14,8 @@ def evaluar_recomendaciones(reales, recomendadas):
     falsos_negativos = len(reales_set - recomendadas_set)  # Elementos reales pero no recomendados
 
     # Cálculo de precisión y recall
-    precision = verdaderos_positivos / len(recomendadas) if recomendadas else 0
-    recall = verdaderos_positivos / len(reales) if reales else 0
+    precision = verdaderos_positivos / len(recomendadas) if len(recomendadas) > 0 else 0
+    recall = verdaderos_positivos / len(reales) if len(reales) > 0 else 0
 
     # Mostrar resultados detallados
     print("\n=== Evaluación de Recomendaciones ===")
@@ -29,7 +29,7 @@ def evaluar_recomendaciones(reales, recomendadas):
 
     return precision, recall
 
-# Ejemplo de uso
-reales = [1, 2, 5]
-recomendadas = [1, 3, 5, 7, 8]
-evaluar_recomendaciones(reales, recomendadas)
+        # # Ejemplo de uso
+        # reales = [1, 2, 5]
+        # recomendadas = [1, 3, 5, 7, 8]
+        # evaluar_recomendaciones(reales, recomendadas)
