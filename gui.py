@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import messagebox
 import csv
+from info import cargar_datos, generar_matriz_caracteristicas
+from recommender import recomendar_cursos
+from ast import literal_eval
 
 # Leer datos del archivo CSV
 def cargar_cursos(archivo_csv):
@@ -17,19 +20,28 @@ def cargar_cursos(archivo_csv):
             })
     return cursos
 
-# Simular clientes y recomendaciones
-clientes = [
-    {"id": 1, "nombre": "Juan Pérez"},
-    {"id": 2, "nombre": "María López"},
-    {"id": 3, "nombre": "Carlos García"}
-]
+def cargar_usuarios(archivo_csv):
+    usuarios = []
+    with open(archivo_csv, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            try:
+                # Limpiar y convertir las cadenas a listas
+                cursos_vistos = literal_eval(row["cursos_vistos"].strip())
+                interesados = literal_eval(row["interesados"].strip())
+                no_interesados = literal_eval(row["no_interesados"].strip())
+                
+                usuarios.append({
+                    "id": int(row["usuario_id"]),
+                    "nombre": row["nombre"],
+                    "cursos_vistos": cursos_vistos,
+                    "interesados": interesados,
+                    "no_interesados": no_interesados
+                })
+            except Exception as e:
+                print(f"Error al procesar la fila: {row}, Error: {e}")
+    return usuarios
 
-# Simulación de recomendaciones por cliente
-recomendaciones_por_cliente = {
-    1: [1, 2, 3, 4],
-    2: [5, 6, 7, 8],
-    3: [9, 10, 11, 12]
-}
 
 class RecomendacionesApp:
     def __init__(self, master, cursos):
@@ -40,6 +52,7 @@ class RecomendacionesApp:
         self.cursos = cursos
         self.cliente_seleccionado = tk.StringVar(value="Selecciona un cliente")
         self.recomendaciones = []
+        self.cursos_vistos = []
         self.interesados = []
         self.no_interesados = []
 
@@ -52,6 +65,7 @@ class RecomendacionesApp:
             self.frame, self.cliente_seleccionado, *[cliente["nombre"] for cliente in clientes], 
             command=self.cambiar_cliente
         )
+        self.cliente_seleccionado.set("Selecciona un cliente")  # Establecer valor predeterminado
         self.cliente_menu.pack(pady=5)
 
         # Frame para mostrar las tarjetas de recomendaciones
@@ -63,14 +77,16 @@ class RecomendacionesApp:
         cliente = next((c for c in clientes if c["nombre"] == cliente_nombre), None)
         if cliente:
             self.cliente_id = cliente["id"]
-            self.interesados = []  # Reiniciar intereses
-            self.no_interesados = []  # Reiniciar descartes
+            self.cursos_vistos = cliente["cursos_vistos"]  # Reiniciar cursos vistos
+            self.interesados = cliente["interesados"]  # Reiniciar intereses
+            self.no_interesados = cliente["no_interesados"]  # Reiniciar descartes
             self.actualizar_recomendaciones()
 
     def actualizar_recomendaciones(self):
         # Obtener recomendaciones del cliente
         if hasattr(self, 'cliente_id'):
-            self.recomendaciones = recomendaciones_por_cliente.get(self.cliente_id, [])
+            lista_recomendaciones, similitudes = recomendar_cursos(self.cursos_vistos)
+            self.recomendaciones = lista_recomendaciones
         else:
             self.recomendaciones = []
 
@@ -134,8 +150,11 @@ class RecomendacionesApp:
             self.no_interesados.append(curso_id)
             messagebox.showinfo("Descartado", f"El curso con ID {curso_id} ha sido marcado como 'No me interesa'.")
 
-# Cargar cursos desde el CSV
-cursos = cargar_cursos("data/data.csv")
+RUTA_DATASET = "data/data.csv"
+RUTA_INTERRACIONES = "data/interacciones_usuarios.csv"
+
+cursos = cargar_cursos(RUTA_DATASET)
+clientes = cargar_usuarios(RUTA_INTERRACIONES)
 
 # Crear la ventana principal
 root = tk.Tk()
