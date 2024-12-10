@@ -35,7 +35,15 @@ def recomendar_cursos(usuario, top_n=5):
     similitudes = cosine_similarity(perfil_usuario, matriz_caracteristicas).flatten()
 
     # Ordenar índices por similitud de mayor a menor
-    indices_recomendados = np.argsort(similitudes)[::-1][:top_n]
+    indices_ordenados = np.argsort(similitudes)[::-1]
+
+    # Excluir los cursos que el usuario ya ha visto
+    cursos_vistos = set(usuario.get("cursos_vistos", []))
+    indices_filtrados = [indice for indice in indices_ordenados if indice not in cursos_vistos]
+    
+    # Seleccionar los mejores "top_n" de los filtrados
+    indices_recomendados = indices_filtrados[:top_n]
+    
     similitudes_recomendadas = similitudes[indices_recomendados]
 
     print("\nRecomendaciones para el usuario:")

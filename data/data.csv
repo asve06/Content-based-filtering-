@@ -19,3 +19,15 @@ id,nombre,descripcion,categoria,nivel
 18,Machine Learning para Finanzas,"Aplicaciones de Machine Learning en análisis financiero y predicción de mercados.",Inteligencia Artificial,Avanzado
 19,Análisis Exploratorio de Datos,"Domina herramientas de visualización y análisis para interpretar datos.",Datos,Intermedio
 20,Fundamentos de Redes,"Aprende cómo funcionan las redes informáticas, desde conceptos básicos hasta protocolos.",Ciberseguridad,Principiante
+21,Python para Análisis de Datos,"Aprende a utilizar pandas, NumPy y Matplotlib para explorar y analizar grandes conjuntos de datos.",Datos,Intermedio
+22,Visualización de Datos con Tableau,"Crea dashboards interactivos y gráficos avanzados para presentar datos de manera efectiva.",Datos,Avanzado
+23,Desarrollo de Juegos con Unity,"Diseña y programa videojuegos en 2D y 3D utilizando Unity y C#.",Programación,Intermedio
+24,Fundamentos de UX/UI,"Descubre los principios del diseño centrado en el usuario y prototipos con herramientas como Figma.",Diseño,Principiante
+25,Automatización con Python,"Automatiza tareas repetitivas y mejora tu productividad escribiendo scripts en Python.",Programación,Intermedio
+26,Introducción a Blockchain,"Entiende cómo funciona la tecnología blockchain y sus aplicaciones en criptomonedas y contratos inteligentes.",Tecnología,Principiante
+27,Gestión de Proyectos con Agile,"Aprende las bases de la metodología Agile y cómo aplicarla con Scrum y Kanban.",Negocios,Intermedio
+28,Producción de Música Electrónica,"Crea y edita pistas musicales con software como Ableton Live y FL Studio.",Arte,Intermedio
+29,Seguridad en Aplicaciones Web,"Aprende a identificar y mitigar vulnerabilidades comunes en aplicaciones web.",Ciberseguridad,Avanzado
+30,Marketing de Contenidos,"Domina estrategias para crear contenido atractivo y aumentar la audiencia en redes sociales y blogs.",Marketing,Intermedio
+31,Fundamentos de Tipografía,"Aprende los principios básicos de la tipografía y cómo seleccionar y combinar fuentes de manera efectiva.",Diseño,Principiante
+32,Edición Avanzada de Imágenes con Photoshop,"Explora herramientas avanzadas de Photoshop para retoque fotográfico y creación de composiciones impactantes.",Diseño,Intermedio

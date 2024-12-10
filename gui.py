@@ -75,10 +75,29 @@ class RecomendacionesApp:
         self.notebook = ttk.Notebook(self.frame)
         self.notebook.pack(pady=10)
         
-        # Pestaña Principal
-        self.pestana_principal = tk.Frame(self.notebook)
-        self.notebook.add(self.pestana_principal, text="Principal")
+        # Pestaña Principal con Scrollbar
+        self.pestana_principal_container = tk.Frame(self.notebook)  # Contenedor general
+        self.notebook.add(self.pestana_principal_container, text="Principal")
 
+        # Crear un canvas para permitir desplazamiento
+        self.canvas_principal = tk.Canvas(self.pestana_principal_container)
+        self.scrollbar_principal = tk.Scrollbar(
+            self.pestana_principal_container, orient="vertical", command=self.canvas_principal.yview
+        )
+        self.canvas_principal.configure(yscrollcommand=self.scrollbar_principal.set)
+
+        # Empaquetar canvas y scrollbar
+        self.canvas_principal.pack(side="left", fill="both", expand=True)
+        self.scrollbar_principal.pack(side="right", fill="y")
+
+        # Frame interno para widgets
+        self.pestana_principal = tk.Frame(self.canvas_principal)
+        self.canvas_principal.create_window((0, 0), window=self.pestana_principal, anchor="nw")
+
+        # Configurar el evento para ajustar el scroll cuando cambie el contenido
+        self.pestana_principal.bind("<Configure>", self.actualizar_scroll)
+
+    
         # Pestaña Recomendado
         self.pestana_recomendados = tk.Frame(self.notebook)
         self.notebook.add(self.pestana_recomendados, text="Recomendado")
@@ -95,7 +114,10 @@ class RecomendacionesApp:
         self.pestana_no_interesados = tk.Frame(self.notebook)
         self.notebook.add(self.pestana_no_interesados, text="No Interesados")
 
-
+    # Método para ajustar el tamaño del canvas
+    def actualizar_scroll(self, event=None):
+        self.canvas_principal.configure(scrollregion=self.canvas_principal.bbox("all"))
+        
     def refresh(self):
         # Actualiza las recomendaciones y los cursos vistos, interesados y no interesados
         cliente_nombre = self.cliente_seleccionado.get()

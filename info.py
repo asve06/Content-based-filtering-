@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
-import pandas as pd
+from nltk.corpus import stopwords
     
 def cargar_datos(ruta):
     """
@@ -31,8 +31,12 @@ def generar_matriz_caracteristicas(df):
     """
     try:
         df = limpiar_datos(df)
-        vectorizador = TfidfVectorizer(stop_words="english")
-        matriz = vectorizador.fit_transform(df["descripcion"])
+        df["texto_combinado"] = (
+        df["descripcion"] + " " + df["categoria"] + " " + df["nivel"]
+    )
+        stop_words_espanol = stopwords.words('spanish')
+        vectorizador = TfidfVectorizer(stop_words=stop_words_espanol)
+        matriz = vectorizador.fit_transform(df["texto_combinado"])
         print("✔️ Matriz TF-IDF generada exitosamente.")
         return matriz, vectorizador
     except Exception as e:

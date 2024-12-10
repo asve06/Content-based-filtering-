@@ -28,8 +28,3 @@ def evaluar_recomendaciones(reales, recomendadas):
     print(f"Recall: {recall:.2f}")
 
     return precision, recall
-
-        # # Ejemplo de uso
-        # reales = [1, 2, 5]
-        # recomendadas = [1, 3, 5, 7, 8]
-        # evaluar_recomendaciones(reales, recomendadas)
