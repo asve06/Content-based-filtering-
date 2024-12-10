@@ -202,8 +202,9 @@ class RecomendacionesApp:
             frame = tk.Frame(tarjeta)
             frame.pack(anchor="w", fill="x", padx=10)
             tk.Label(frame, text=f"{similitud*100:.2f}%", font=("Arial", 20, "bold italic"), fg="pink").pack(side="right")
-            tk.Label(frame, text="Similitud:", font=("Arial", 14, "italic"), fg="pink").pack(side="right")
-            
+            tk.Label(frame, text="Coincidencia:", font=("Arial", 14, "italic"), fg="pink").pack(side="right")
+            if similitud >= 0.7:
+                tk.Label(frame, text="¡Este es el curso para ti👐!", font=("Arial", 14, "bold"), fg="lightgreen").pack(anchor="w", padx=10)
 
         # Mostrar botones solo en la pestaña principal
         if pestana == self.pestana_principal and show_buttons:
